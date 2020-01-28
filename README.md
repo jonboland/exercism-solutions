@@ -1,2 +1,2 @@
 # exercism-solutions
-My exercism.io solutions
+My solutions to exercism.io coding exercises.
