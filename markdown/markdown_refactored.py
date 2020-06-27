@@ -9,6 +9,7 @@ HEADING_TYPES = ["#" * num for num in range(1, 7)]
 
 
 def parse(text):
+    """Parse string with Markdown syntax and return HTML."""
     for heading_type in HEADING_TYPES:
         n = len(heading_type)
         headings = f"^{heading_type} (.*)"
