@@ -3,21 +3,21 @@ using System.Linq;
 
 public class GradeSchool
 {
-    private readonly SortedList<int, string> register = new SortedList<int, string>();
+    private List<(int Year, string Name)> register = new List<(int, string)>();
 
     public void Add(string student, int grade)
     {
-        register.Add(grade, student);
-        //register.Sort();
+        register.Add((grade, student));
+        register.Sort();
     }
 
     public IEnumerable<string> Roster()
     {
-        return register.Select(r => r.Value);
+        return register.Select(r => r.Name);
     }
 
     public IEnumerable<string> Grade(int grade)
     {
-        return register.Where(r => r.Key == grade).Select(r => r.Value);
+        return register.Where(r => r.Year == grade).Select(r => r.Name);
     }
 }
