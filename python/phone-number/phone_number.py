@@ -2,7 +2,7 @@ from string import ascii_letters, punctuation
 
 
 INVALID_NUMS = {"0": "zero", "1": "one"}
-INVALID_CHARS = set(punctuation).difference("(", "-", ")")
+INVALID_PUNC = set(punctuation).difference("+", ".", "(", "-", ")")
 VALIDATION = {
     "punctuation": "punctuations not permitted",
     "letters": "letters not permitted",
@@ -41,7 +41,7 @@ class PhoneNumber:
     def _validate_chars(self, phone_number):
         unique_chars = set(phone_number)
 
-        if unique_chars.intersection(INVALID_CHARS):
+        if unique_chars.intersection(INVALID_PUNC):
             raise ValueError(VALIDATION["punctuation"])
 
         if unique_chars.intersection(ascii_letters):
