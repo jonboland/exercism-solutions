@@ -1,8 +1,8 @@
-from string import ascii_letters
+from string import ascii_letters, punctuation
 
 
 INVALID_NUMS = {"0": "zero", "1": "one"}
-INVALID_CHARS = {"@", ":", "!"}
+INVALID_CHARS = set(punctuation).difference("(", "-", ")")
 VALIDATION = {
     "punctuation": "punctuations not permitted",
     "letters": "letters not permitted",
