@@ -113,10 +113,3 @@ def _validate_delimiters(is_value, value, current):
 def _validate_property_is_uppercase(current):
     if not current.isupper():
         raise ValueError(VALIDATION["uppercase"])
-
-
-if __name__ == "__main__":
-    # "]b\nc\nd  e \n]"
-    input_string = "(;A[\\]b\nc\nd\t\te \n\\]])"
-    tree = parse(input_string)
-    print(tree.properties)
