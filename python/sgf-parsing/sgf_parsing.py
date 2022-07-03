@@ -47,45 +47,40 @@ def parse(input_string):
 
     stack = list(input_string)
     tree = SgfTree()
+    prop = {}
+    value = deque()
     is_value = False
-    value, prop = deque(), {}
+    
 
     while stack:
         current = stack.pop()
-        _validate_delimiters(is_value, value, current)
+        _validate_delimiters(value, is_value, current)
 
         if current in PARENS:
             continue
         elif current == SEMICOLON:
             _add_node(tree, prop)
-            value, prop = deque(), {}
         elif is_value and current != BRACKETS[0]:
             current = _replace_slashes_and_tabs(current)
             if current:
                 _add_current_to_value(stack, value, current)
         elif current in BRACKETS:
             is_value = not is_value
-        elif not is_value:
+        else:
             _validate_property_is_uppercase(current)
-            prop[current] = list(value)
-            value = deque()
+            _add_property(prop, value, current)
 
     return tree
 
 
-def _add_node(tree, property):
+def _add_node(tree, prop):
     if not tree.properties:
-        tree.properties = property
+        tree.properties = prop.copy()
     else:
         tree.children.appendleft(SgfTree(tree.properties))
-        tree.properties = property
-
-
-def _add_current_to_value(stack, value, current):
-    if stack and stack[-1] != BRACKETS[0] and value:
-        value[0] = current + value[0]
-    else:
-        value.appendleft(current)
+        tree.properties = prop.copy()
+    
+    prop.clear()
 
 
 def _replace_slashes_and_tabs(current):
@@ -97,6 +92,18 @@ def _replace_slashes_and_tabs(current):
     return current
 
 
+def _add_current_to_value(stack, value, current):
+    if stack and stack[-1] != BRACKETS[0] and value:
+        value[0] = current + value[0]
+    else:
+        value.appendleft(current)
+
+
+def _add_property(prop, value, current):
+    prop[current] = list(value)
+    value.clear()
+
+
 def _validate_is_tree_with_node(input_string):
     if input_string in CHARS[:2]:
         raise ValueError(VALIDATION["tree"])
@@ -105,7 +112,7 @@ def _validate_is_tree_with_node(input_string):
         raise ValueError(VALIDATION["node"])
 
 
-def _validate_delimiters(is_value, value, current):
+def _validate_delimiters(value, is_value, current):
     if not value and not is_value and current.isalpha():
         raise ValueError(VALIDATION["delimiter"])
 
